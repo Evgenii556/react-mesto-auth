@@ -28,7 +28,7 @@ function App() {
   const [isEditProfilePopupOpen, setEditProfilePopup] = useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopup] = useState(false);
   const [isEditAvatarPopupOpen, setEditAvatarPopup] = useState(false);
-  const [selectedCard, setSelectedCard] = useState({});
+  const [selectedCard, setSelectedCard] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState('');
   const [isAuthOk, setIsAuthOk] = useState(false);
@@ -167,9 +167,10 @@ function App() {
     setAddPlacePopup(false);
     setIsInfoToolTipOpened(false);
     setEditAvatarPopup(false);
-    setSelectedCard({});
-    console.log('close popup')
+    setSelectedCard(false);
   }
+
+  const handlePopup = isEditProfilePopupOpen || isAddPlacePopupOpen || isInfoToolTipOpened || isEditAvatarPopupOpen || selectedCard
 
   useEffect(() => {
     const handleEscapeKey = (evt) => {
@@ -178,23 +179,22 @@ function App() {
       }
     }
     const handleOverlayClick = (evt) => {
-      if (evt.target.classList.contains('popup_opened')
-        || evt.target.classList.contains('popup__close-icon')) {
+      if (evt.target.classList.contains('popup_opened')) {
         closeAllPopups();
       }
     }
 
-    document.addEventListener('mousedown', handleOverlayClick);
+    if(handlePopup) {
+      document.addEventListener('mousedown', handleOverlayClick);
 
-    document.addEventListener('keydown', handleEscapeKey);
-    return () => document.removeEventListener('keydown', handleEscapeKey);
-  }, [
-    isEditProfilePopupOpen,
-    isAddPlacePopupOpen,
-    isInfoToolTipOpened,
-    isEditAvatarPopupOpen,
-    selectedCard,
-  ]);
+      document.addEventListener('keydown', handleEscapeKey);
+      
+      return () => {
+        document.removeEventListener('mousedown', handleOverlayClick);
+        document.removeEventListener('keydown', handleEscapeKey)};
+    }
+    
+  }, [handlePopup]);
   
   return (
     <CurrentUserContext.Provider value={currentUser}>
