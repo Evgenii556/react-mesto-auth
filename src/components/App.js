@@ -53,7 +53,7 @@ function App() {
 
   useEffect(() => {
     checkToken();
-  }, [isLoggedIn]);
+  }, []);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -144,6 +144,7 @@ function App() {
 
   const handleSingOut = () => {
     setIsLoggedIn(false);
+    setUserEmail()
     localStorage.removeItem('token');
   }
 
@@ -167,6 +168,7 @@ function App() {
     setIsInfoToolTipOpened(false);
     setEditAvatarPopup(false);
     setSelectedCard({});
+    console.log('close popup')
   }
 
   useEffect(() => {
@@ -186,8 +188,14 @@ function App() {
 
     document.addEventListener('keydown', handleEscapeKey);
     return () => document.removeEventListener('keydown', handleEscapeKey);
-  })
-
+  }, [
+    isEditProfilePopupOpen,
+    isAddPlacePopupOpen,
+    isInfoToolTipOpened,
+    isEditAvatarPopupOpen,
+    selectedCard,
+  ]);
+  
   return (
     <CurrentUserContext.Provider value={currentUser}>
     <div className="page">
@@ -203,7 +211,7 @@ function App() {
           <Login handleAuthorize={handleAuthorize}/>
         </div>
       }/>
-      <Route path="*" element={isLoggedIn ? <Navigate to='/' /> : <Navigate to='/sing-up' />}/>
+      <Route path="*" element={<Navigate to='/sing-up' />}/>
       <Route path="/" element={
         <ProtectedRoute
           element={

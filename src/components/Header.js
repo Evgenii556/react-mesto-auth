@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, Routes, Route } from "react-router-dom";
 import headerLogo from '../images/Logo1280.svg';
 
-function Header({ userEmail, handleSingOut }) {
+function Header({ userEmail, handleSingOut}) {
     return (
         <header className="header">
             <img className="header__logo" src={headerLogo} alt="MESTO"/>
