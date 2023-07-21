@@ -2,7 +2,6 @@ class Api {
   constructor(options) {
     this._url = options.baseUrl;
     this._headers = options.headers;
-    this._token = options.headers['authorization'];
   }
 
   _getResponse(res) {
@@ -18,7 +17,7 @@ class Api {
 
   getUserInfo() {
     return fetch(this._url + '/users/me', {
-      headers: {authorization: this._token},
+      headers: this._headers,
     })
       .then(this._getResponse);
   }
@@ -46,7 +45,7 @@ class Api {
 
   getCards() {
     return fetch(`${this._url}/cards`, {
-      headers: {authorization: this._token},
+      headers: this._headers,
     })
       .then(this._getResponse);
   }
@@ -103,12 +102,12 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-64',
+  baseUrl: 'https://api.superproject.mesto.nomoredomains.xyz',
   headers: {
-    authorization: '6a959611-dfd2-455f-b813-ecc56a298ccb',
+    'authorization': '',
     'Content-Type': 'application/json'
   }
+  
 });
 
 export default api;
-
